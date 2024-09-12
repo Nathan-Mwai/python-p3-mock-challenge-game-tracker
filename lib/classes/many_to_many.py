@@ -18,7 +18,7 @@ class Game:
             raise Exception('Title must be written')
         self._title = value
     
-    def add_results(self, value):
+    def add_result(self, value):
         if not isinstance(value, Result):
             raise Exception('result mus be an instance of Result')
         self._results.append(value)
@@ -27,7 +27,13 @@ class Game:
         return self._results
 
     def players(self):
-        pass
+        players_done = set()
+        
+        for result in self._results:
+            if isinstance(result.player, Player):
+                players_done.add(result.player)
+                
+        return list(players_done)
 
     def average_score(self, player):
         pass
@@ -62,10 +68,12 @@ class Player:
         return self._results
 
     def games_played(self):
+        
         games_done = set()
-        for games in self._results:
-            if isinstance(games.player, Game):
-                games_done.add(games.player)
+        
+        for result in self._results:
+            if isinstance(result.game, Game):
+                games_done.add(result.game)
         return list(games_done)
 
     def played_game(self, game):
@@ -85,7 +93,7 @@ class Result:
         
         Result.all.append(self)
         player.add_results(self)
-        game.add_results(self)
+        game.add_result(self)
         
     @property
     def score(self):
@@ -121,4 +129,4 @@ class Result:
     def game(self, value):
         if not isinstance(value, Game):
             raise Exception('game must be part of Game')
-        self._player = value
+        self._game = value
