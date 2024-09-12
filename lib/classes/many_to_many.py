@@ -64,3 +64,19 @@ class Result:
         self.player = player
         self.game = game
         self.score = score
+    
+    @property
+    def score(self):
+        return self._score
+    
+    @score.setter
+    def score(self, amount):
+        if not isinstance(amount, int):
+            raise Exception('The amount must be an integer')
+        
+        if not (1 <= amount <= 5000):
+            raise Exception('The amount can only be between 1 and 5000')
+        
+        if hasattr(self, '_score') and self._score is not None:
+            raise Exception('The score cannot be changed')
+        self._score = amount
